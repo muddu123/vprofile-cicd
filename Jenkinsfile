@@ -79,23 +79,24 @@ pipeline {
             }
         }
 
-       stage('Archive Artifact') {
+        stage('Archive Artifact') {
             steps {
                 archiveArtifacts artifacts: 'target/*.war', fingerprint: true
             }
         }
-    }
-}
-stage('Deploy to Tomcat') {
-    steps {
-        deploy adapters: [
-            tomcat9(
-                credentialsId: 'tomcat-creds',
-                path: '',
-                url: 'http://65.2.189.197:8080'
-            )
-        ],
-        contextPath: 'vprofile',
-        war: 'target/vprofile-v2.war'
+
+        stage('Deploy to Tomcat') {
+            steps {
+                deploy adapters: [
+                    tomcat9(
+                        credentialsId: 'tomcat-creds',
+                        path: '',
+                        url: 'http://65.2.189.197:8080'
+                    )
+                ],
+                contextPath: 'vprofile',
+                war: 'target/vprofile-v2.war'
+            }
+        }
     }
 }
