@@ -5,6 +5,10 @@ pipeline {
         maven 'MAVEN3'
     }
 
+    environment {
+        scannerHome = tool 'sonarscanner4'
+    }
+
     stages {
 
         stage('Checkout') {
@@ -22,6 +26,34 @@ pipeline {
         stage('Unit Test') {
             steps {
                 sh 'mvn test'
+            }
+        }
+
+        stage('Checkstyle') {
+            steps {
+                sh 'mvn checkstyle:checkstyle'
+            }
+        }
+
+        stage('SonarQube Analysis') {
+            steps {
+                withSonarQubeEnv('sonar-pro') {
+                    sh '''
+                    ${scannerHome}/bin/sonar-scanner \
+                    -Dsonar.projectKey=vprofile \
+                    -Dsonar.projectName=vprofile \
+                    -Dsonar.sources=src \
+                    -Dsonar.java.binaries=target/classes
+                    '''
+                }
+            }
+        }
+
+        stage('Quality Gate') {
+            steps {
+                timeout(time: 10, unit: 'MINUTES') {
+                    waitForQualityGate abortPipeline: true
+                }
             }
         }
 
