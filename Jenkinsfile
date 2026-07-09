@@ -38,13 +38,13 @@ pipeline {
         stage('SonarQube Analysis') {
             steps {
                 withSonarQubeEnv('sonar-pro') {
-                    sh '''
+                    sh """
                     ${scannerHome}/bin/sonar-scanner \
                     -Dsonar.projectKey=vprofile \
                     -Dsonar.projectName=vprofile \
                     -Dsonar.sources=src \
                     -Dsonar.java.binaries=target/classes
-                    '''
+                    """
                 }
             }
         }
@@ -64,7 +64,7 @@ pipeline {
                     protocol: 'http',
                     nexusUrl: '3.110.225.37:8081',
                     groupId: 'com.visualpathit',
-                    version: "${env.BUILD_NUMBER}",
+                    version: "${BUILD_NUMBER}",
                     repository: 'vprofile-release',
                     credentialsId: 'nexus-creds',
                     artifacts: [
@@ -86,16 +86,19 @@ pipeline {
         }
 
         stage('Deploy to Tomcat') {
-    steps {
-        deploy adapters: [
-            tomcat9(
-                credentialsId: 'tomcat-creds',
-                path: '',
-                url: 'http://13.206.201.103:8080'
-            )
-        ],
-        contextPath: 'vprofile',
-        war: 'target/vprofile-v2.war'
-    }
-}
+            steps {
+                deploy adapters: [
+                    tomcat9(
+                        credentialsId: 'tomcat-creds',
+                        path: '',
+                        url: 'http://13.206.201.103:8080'
+                    )
+                ],
+                contextPath: 'vprofile',
+                war: 'target/vprofile-v2.war'
+            }
+        }
 
+    }
+
+}
