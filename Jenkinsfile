@@ -86,17 +86,16 @@ pipeline {
         }
 
         stage('Deploy to Tomcat') {
-            steps {
-                deploy adapters: [
-                    tomcat9(
-                        credentialsId: 'tomcat-creds',
-                        path: '',
-                        url: 'http://13.206.201.103:8080'
-                    )
-                ],
-                contextPath: 'vprofile',
-                war: 'target/vprofile-v2.war'
-            }
-        }
+    steps {
+        deploy adapters: [
+            tomcat9(
+                credentialsId: 'tomcat-creds',
+                path: '',
+                url: 'http://13.206.201.103:8080'
+            )
+        ],
+        contextPath: 'vprofile',
+        war: 'target/vprofile-v2.war'
     }
 }
+
