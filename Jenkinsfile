@@ -62,7 +62,7 @@ pipeline {
                 nexusArtifactUploader(
                     nexusVersion: 'nexus3',
                     protocol: 'http',
-                    nexusUrl: '3.110.225.37:8081',
+                    nexusUrl: 'localhost:8081',
                     groupId: 'com.visualpathit',
                     version: "${BUILD_NUMBER}",
                     repository: 'vprofile-release',
