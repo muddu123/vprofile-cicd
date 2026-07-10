@@ -62,7 +62,7 @@ pipeline {
                 nexusArtifactUploader(
                     nexusVersion: 'nexus3',
                     protocol: 'http',
-                    nexusUrl: 'localhost:8081',
+                    nexusUrl: '13.207.55.41:8081',
                     groupId: 'com.visualpathit',
                     version: "${BUILD_NUMBER}",
                     repository: 'vprofile-release',
@@ -91,7 +91,7 @@ pipeline {
                     tomcat9(
                         credentialsId: 'tomcat-creds',
                         path: '',
-                        url: 'http://13.206.201.103:8080'
+                        url: 'http://15.206.27.101:8080'
                     )
                 ],
                 contextPath: 'vprofile',
